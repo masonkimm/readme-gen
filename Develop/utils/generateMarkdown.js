@@ -9,6 +9,7 @@ function generateMarkdown(data) {
 
 
 // -- Here we are making our FUNCTION available outside (EXPORTING) of this file -- //
-module.exports = generateMarkdown;
+
+module.exports = generateMarkdown();
 // -- NOTICE: that we are adding this function to the 'module.exports' OBJECT -- //
 

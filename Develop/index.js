@@ -3,6 +3,7 @@
 var inquirer = require("inquirer")
 var axios = require("axios")
 var fs = require("fs")
+// var bs = require("./utils/generateMarkdown")
 
 inquirer
 .prompt([
@@ -21,63 +22,89 @@ inquirer
     message: "Enter a brief description of the project",
     name: "description"
   },
+  // {
+  //   type: "list", 
+  //   message: "What to include in your README",
+  //   name: "Table of Content",
+  //   choices: ["
+  //   "],
+  // },
 
 ]).then(response =>{
-  let msgName = ("GitHub Username: " + response.username) +"\n";
-  let msgTitle = ("Title: " + response.title)+ "\n";
-  let msgDescription = ("Project Description: " + response.description)+ "\n";
+
+  let output = `# ${response.username}` + "\n" + "\n";
   
-  writeName(msgName);
-  ajaxCall(response);
-  appendTitle(msgTitle);
-  appendDescription(msgDescription)
-})
+  output += `## ${response.title}` + "\n" + "\n";
+  output += "## Project Description:" + "\n" + "\n" + response.description + "\n" + "\n" ;
 
-// function to WRITE username and to create README file
-let writeName = (msgName) => {
-  fs.writeFile("README.md", msgName, function(err){
-    if(err){
-      return console.log(err)
-    }
-    return console.log("success! README.md Generated!")
-  })
-}
+  output += "## Table of Contents:" + "\n" + "\n";
+  output += "* [Installation]"+ "\n" + "* [Usage]"+ "\n" + "* [Credits]"+ "\n" + "* [License]"+ "\n"+ "\n" + "\n" 
+ 
+  const queryUrl = `https://api.github.com/users/${response.username}`;
 
-// function to APPEND title to README
-let appendTitle = (msgTitle) => {
-  fs.appendFile("README.md", msgTitle, (err)=>{
-    if(err){
-      return console.log(err)
-    }
-  })
-}
-
-// function to APPEND description to README
-let appendDescription = (msgDescription) => {
-  fs.appendFile("README.md", msgDescription,(err)=>{
-    if(err){
-      return console.log(err)
-    }
-  })
-}
-
-// function to call github AJAX
-let ajaxCall = ({username})=>{
-  const queryUrl = `https://api.github.com/users/${username}`
   axios
   .get(queryUrl)
   .then(response =>{
 
-    let gitLink = ("GitHub Url: "+response.config.url) + "\r\n";
+  let gitLink = (response.config.url);
+  output += "## GitHub Url" + "\n"
+  output += gitLink + "\n"
 
-    // console.log(response)
-    fs.appendFile("README.md", gitLink,(err)=>{
-      if(err){
-        return console.log(err)
-      }
-    })
+  fs.writeFile("README.md", output, (error)=>{
+    if (error){
+      return console.log(error)
+    }
   })
-}
+
+  })
+    
+})
+
+// // function to WRITE username and to create README file
+// let writeName = (msgName) => {
+//   fs.writeFile("README.md", msgName, function(err){
+//     if(err){
+//       return console.log(err)
+//     }
+//     return console.log("success! README.md Generated!")
+//   })
+// }
+
+// // function to APPEND title to README
+// let appendTitle = (msgTitle) => {
+//   fs.appendFile("README.md", msgTitle, (err)=>{
+//     if(err){
+//       return console.log(err)
+//     }
+//   })
+// }
+
+// // function to APPEND description to README
+// let appendDescription = (msgDescription) => {
+//   fs.appendFile("README.md", msgDescription,(err)=>{
+//     if(err){
+//       return console.log(err)
+//     }
+//   })
+// }
+
+// function to call github AJAX
+// let ajaxCall = ({username})=>{
+//   const queryUrl = `https://api.github.com/users/${username}`
+//   axios
+//   .get(queryUrl)
+//   .then(response =>{
+
+//     let gitLink = ("GitHub Url: "+response.config.url) + "\r\n";
+
+//     // console.log(response)
+//     fs.appendFile("README.md", gitLink,(err)=>{
+//       if(err){
+//         return console.log(err)
+//       }
+//     })
+//   })
+// }
 
 
   // console.log("username: "+ response.username)
