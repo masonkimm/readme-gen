@@ -1,10 +1,11 @@
 # sungjinkimm
+[https://github.com/sungjinkimm]
 
-## Good Title
+## good title
 
 ## Project Description:
 
-This is it
+okie
 
 ## Table of Contents:
 
@@ -13,6 +14,13 @@ This is it
 * [Credits]
 * [License]
 
+## Installation:
+
+dokie
+
+## Use: 
+
+dokie
 
 ## GitHub Url
-https://api.github.com/users/sungjinkimm
+https://github.com/sungjinkimm

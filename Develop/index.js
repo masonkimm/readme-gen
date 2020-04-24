@@ -9,53 +9,75 @@ inquirer
 .prompt([
   {
     type: "input", 
-    message: "Enter your GitHub username",
+    message: "Enter your GitHub username. ",
     name: "username"
   },
   {
     type: "input", 
-    message: "Enter a title for the README.md",
+    message: "Enter a title for the README.md. ",
     name: "title"
   },
   {
     type: "input", 
-    message: "Enter a brief description of the project",
+    message: "Enter a brief description of the project: ",
     name: "description"
   },
-  // {
-  //   type: "list", 
-  //   message: "What to include in your README",
-  //   name: "Table of Content",
-  //   choices: ["
-  //   "],
-  // },
+  {
+    type: "list", 
+    message: "Do you want Table of Content? ",
+    name: "answer1",
+    choices:[
+      "Yes",
+      "No"
+    ]
+  },
+  {
+    type: "input", 
+    message: "Enter Installation Process for your project: ",
+    name: "installation"
+  },
+  {
+    type: "input", 
+    message: "Enter Instructions and examples for use: ",
+    name: "use"
+  },
+  
+ 
 
 ]).then(response =>{
 
-  let output = `# ${response.username}` + "\n" + "\n";
-  
+  let output = `# ${response.username}` + "\n";
+  output += "[https://github.com/"+ response.username+"]" + "\n"+ "\n";
+
   output += `## ${response.title}` + "\n" + "\n";
   output += "## Project Description:" + "\n" + "\n" + response.description + "\n" + "\n" ;
 
-  output += "## Table of Contents:" + "\n" + "\n";
-  output += "* [Installation]"+ "\n" + "* [Usage]"+ "\n" + "* [Credits]"+ "\n" + "* [License]"+ "\n"+ "\n" + "\n" 
- 
+  if (response.answer1.includes("Yes")){
+    output += "## Table of Contents:" + "\n" + "\n";
+    output += "* [Installation]"+ "\n" + "* [Usage]"+ "\n" + "* [Credits]"+ "\n" + "* [License]"+ "\n"+ "\n" 
+  }
+
+  output += "## Installation:" + "\n" + "\n" + response.installation + "\n" + "\n";
+  output += "## Use: " + "\n" + "\n" + response.installation + "\n" + "\n";
+  
   const queryUrl = `https://api.github.com/users/${response.username}`;
 
   axios
   .get(queryUrl)
   .then(response =>{
-
-  let gitLink = (response.config.url);
+  
+  // console.log(response)
+  let gitLink = (response.data.html_url);
   output += "## GitHub Url" + "\n"
-  output += gitLink + "\n"
+  output += "["+ gitLink + "]"+ "\n"
 
   fs.writeFile("README.md", output, (error)=>{
     if (error){
       return console.log(error)
+    } else{
+      console.log("README.md generated")
     }
   })
-
   })
     
 })
