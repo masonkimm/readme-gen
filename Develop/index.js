@@ -39,27 +39,52 @@ inquirer
   {
     type: "input", 
     message: "Enter Instructions and examples for use: ",
-    name: "use"
+    name: "usage"
+  },
+  {
+    type: "input", 
+    message: "List your collaborators:  ",
+    name: "credits"
+  },
+  {
+    type: "input", 
+    message: "Enter the current Year to put on the license: ",
+    name: "licenseYear"
+  },
+  {
+    type: "input", 
+    message: "Enter the Name to put on the license: ",
+    name: "licenseName"
   },
   
- 
 
 ]).then(response =>{
 
-  let output = `# ${response.username}` + "\n";
-  output += "[https://github.com/"+ response.username+"]" + "\n"+ "\n";
+  let output = `# ${response.title}` + "\n" + "\n";
 
-  output += `## ${response.title}` + "\n" + "\n";
+  output += `## ${response.username}` + "\n";
+  output += "[https://github.com/sungjinkimm](https://github.com/"+ response.username+ ")" + "\n"+ "\n";
+
   output += "## Project Description:" + "\n" + "\n" + response.description + "\n" + "\n" ;
 
   if (response.answer1.includes("Yes")){
     output += "## Table of Contents:" + "\n" + "\n";
-    output += "* [Installation]"+ "\n" + "* [Usage]"+ "\n" + "* [Credits]"+ "\n" + "* [License]"+ "\n"+ "\n" 
+    output += "* [Installation](#Installation)"+ "\n" + "* [Usage](#Usage)"+ "\n" + "* [Credits](#Credits)"+ "\n" + "* [License](#License)" +"\n" + "\n" 
   }
 
   output += "## Installation:" + "\n" + "\n" + response.installation + "\n" + "\n";
-  output += "## Use: " + "\n" + "\n" + response.installation + "\n" + "\n";
-  
+
+  output += "## Usage: " + "\n" + "\n" + response.usage + "\n" + "\n";
+
+  output += "## Credits: " + "\n" + "\n" + response.credits + "\n" + "\n";
+
+  output += "## License: " + "\n" + "\n" + response.licenseYear + "\n" + "\n" + response.licenseName + "\n" + "\n";
+
+  const licenceMaterial = 
+
+
+  output += "## Badge: " + "\n" + "\n" + "![GitHub followers](https://img.shields.io/github/followers/"+ `${response.username}` + "?style=social)" + "\n" + "\n";
+
   const queryUrl = `https://api.github.com/users/${response.username}`;
 
   axios
@@ -67,9 +92,12 @@ inquirer
   .then(response =>{
   
   // console.log(response)
+  let gitAvatar = (response.data.avatar_url)
   let gitLink = (response.data.html_url);
-  output += "## GitHub Url" + "\n"
-  output += "["+ gitLink + "]"+ "\n"
+  output += "## GitHub URL & Profile" + "\n"
+  output += "[GitHub URL]("+ gitLink + ")"+ "\n"+ "\n"
+  output += "![GitHub Avatar]("+ gitAvatar + ")"+ "\n"
+
 
   fs.writeFile("README.md", output, (error)=>{
     if (error){
