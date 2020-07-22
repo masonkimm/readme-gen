@@ -26,10 +26,11 @@ THEN a README for the repo is generated
 
 ## Installation:
 Command: 
-  1) npm i >> for installing npm packages
-  2) node index.js >> program will start up in the terminal
+```sh
+npm i
 
-
+node index.js
+```
 
 ## Credits: 
 
