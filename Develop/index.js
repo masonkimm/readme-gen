@@ -8,6 +8,12 @@ var fs = require('fs');
 inquirer
   .prompt([
     {
+      type: 'confirm',
+      message:
+        'Hi, Welcome to the ReadMe. Generator! Do you want to create a readMe file? ',
+      name: 'confirmation',
+    },
+    {
       type: 'input',
       message: 'Enter your GitHub username: ',
       name: 'username',
